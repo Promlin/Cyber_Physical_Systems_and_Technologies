@@ -46,6 +46,8 @@ class Lab1:
         T = -Td / npy.log(K[1])
         L = T * R
 
+        print(R, "---", L)
+
         current_est = X.dot(K)
 
         fig, ax = pyplt.subplots(1, 1)
@@ -64,12 +66,13 @@ class Lab1:
         n = 1000
         for i in range(0, n - 1, 1):
             ind = (time >= T_per * i) & (time <= T_per * (i + 1))
+            # if all(voltage[ind] > 0):
             new_current = current[ind]
             new_current = new_current[:, npy.newaxis]
             new_voltage = voltage[ind]
             new_voltage = new_voltage[:, npy.newaxis]
 
-            X = npy.concatenate([new_voltage[1:len(new_voltage) - 1], new_current[0:len(new_current) - 2]], axis=1)
+            X = npy.concatenate([new_voltage[0:len(new_voltage) - 2], new_current[0:len(new_current) - 2]], axis=1)
             Y = current[1:len(new_current) - 1]
             K = npy.dot(npy.dot(alg.inv(npy.dot(X.T, X)), X.T), Y)
 
